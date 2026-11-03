@@ -22,7 +22,6 @@ path_hook: hookfigma.hook9, hookfigma.hook7, hookfigma.hook13
 ## 📌 Visão Geral do Projeto
 
 Este projeto consolida a entrega técnica do **Challenge Rota 4 (Finanças e Operações)** da empresa simulada **Taranis Black** pelo programa **Oracle Next Education (ONE G11) & Alura**. A solução une automação de infraestrutura via Bash (`gerar_projeto.sh` e `up.sh`) a uma aplicação corporativa robusta em **Java Spring Boot**, integrando o **WebClient reativo** com a **Gemini API** (`gemini-2.5-flash`) para gerar diagnósticos financeiros em tempo real e exportação automatizada para mala direta corporativa.
-Este script em **Bash** automatiza a criação completa de uma aplicação corporativa estruturada em **Java Spring Boot**. O sistema integra o **WebClient reativo** com a **Gemini API** (`gemini-2.5-flash`) para processar dados financeiros e operacionais complexos da empresa simulada **Taranis Black (Rota 4 — Oracle Next Education / Alura)**.
 
 ---
 
