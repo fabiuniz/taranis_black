@@ -17,6 +17,7 @@ env:
   GCP_REGION: us-central1
   SERVICE_NAME: taranis-finance-ai
   IMAGE_NAME: taranis-finance-ai
+  WORKING_DIR: taranis-finance-ai
 
 jobs:
   test:
@@ -41,11 +42,12 @@ jobs:
 
     - name: Grant execute permission for Maven Wrapper
       run: |
-        if [ -f "mvnw" ]; then
-          chmod +x mvnw
+        if [ -f "${{ env.WORKING_DIR }}/mvnw" ]; then
+          chmod +x ${{ env.WORKING_DIR }}/mvnw
         fi
 
     - name: Run tests
+      working-directory: ${{ env.WORKING_DIR }}
       run: |
         if [ -f "./mvnw" ]; then
           ./mvnw clean test
@@ -77,11 +79,12 @@ jobs:
 
     - name: Grant execute permission for Maven Wrapper
       run: |
-        if [ -f "mvnw" ]; then
-          chmod +x mvnw
+        if [ -f "${{ env.WORKING_DIR }}/mvnw" ]; then
+          chmod +x ${{ env.WORKING_DIR }}/mvnw
         fi
 
     - name: Build application
+      working-directory: ${{ env.WORKING_DIR }}
       run: |
         if [ -f "./mvnw" ]; then
           ./mvnw clean package -DskipTests
@@ -114,6 +117,7 @@ jobs:
       run: gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev
 
     - name: Build Docker image
+      working-directory: ${{ env.WORKING_DIR }}
       run: |
         docker build -t ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:$GITHUB_SHA .
         docker tag ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:$GITHUB_SHA ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:latest
@@ -121,7 +125,7 @@ jobs:
     - name: Push Docker image to Artifact Registry
       run: |
         docker push ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:$GITHUB_SHA
-        docker push ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_Name/$IMAGE_NAME:latest
+        docker push ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:latest
 
     - name: Deploy to Cloud Run
       run: |
