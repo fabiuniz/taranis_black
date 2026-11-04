@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17-jdk-jammy AS build
 WORKDIR /app
-COPY . .
+COPY taranis-finance-ai/ .
 RUN chmod +x mvnw || true
 RUN ./mvnw clean package -DskipTests
 

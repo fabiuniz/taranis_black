@@ -118,7 +118,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -f Dockerfile -t ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:$GITHUB_SHA ./taranis-finance-ai
+        docker build -f Dockerfile -t ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:$GITHUB_SHA .
         docker tag ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:$GITHUB_SHA ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:latest
 
     - name: Push Docker image to Artifact Registry
