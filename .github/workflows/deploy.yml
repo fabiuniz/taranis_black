@@ -97,9 +97,9 @@ jobs:
       with:
         credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-    #- name: Enable Google Cloud APIs
-    #  run: |
-    #    gcloud services enable artifactregistry.googleapis.com run.googleapis.com
+    - name: Enable Google Cloud APIs
+      run: |
+        gcloud services enable artifactregistry.googleapis.com run.googleapis.com
 
     - name: Ensure Artifact Registry Repo Exists
       run: |
