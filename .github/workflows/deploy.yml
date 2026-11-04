@@ -119,7 +119,7 @@ jobs:
     - name: Build Docker image
       working-directory: ${{ env.WORKING_DIR }}
       run: |
-        docker build -t ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:$GITHUB_SHA .
+        docker build -f Dockerfile -t ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:$GITHUB_SHA .
         docker tag ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:$GITHUB_SHA ${{ env.GCP_REGION }}-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME/$IMAGE_NAME:latest
 
     - name: Push Docker image to Artifact Registry
@@ -146,3 +146,12 @@ jobs:
         URL=$(gcloud run services describe $SERVICE_NAME --platform managed --region $GCP_REGION --format 'value(status.url)')
         echo "url=$URL" >> $GITHUB_OUTPUT
         echo "Service deployed at: $URL"
+
+#Roles  
+# github-actions-deploy@taranis-finance-ai.iam.gserviceaccount.com
+# github-actions-deploy 
+# Admin do Cloud Run
+# Administrador do Artifact Registry
+# Administrador do Service Usage
+# Consumidor do Service Usage
+# Usuário da conta de serviço
