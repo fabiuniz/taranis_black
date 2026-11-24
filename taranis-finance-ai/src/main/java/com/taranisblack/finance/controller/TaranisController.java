@@ -1,9 +1,8 @@
 package com.taranisblack.finance.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taranisblack.finance.model.FinanceReportDTO;
 import com.taranisblack.finance.service.TaranisFinanceService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +17,14 @@ import java.util.Map;
 @RequestMapping("/api/taranis")
 public class TaranisController {
 
-    @Autowired
-    private TaranisFinanceService financeService;
+    private final TaranisFinanceService financeService;
+    private final ObjectMapper objectMapper;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    // Injeção de dependência recomendada via construtor (Best Practice Spring 3+)
+    public TaranisController(TaranisFinanceService financeService, ObjectMapper objectMapper) {
+        this.financeService = financeService;
+        this.objectMapper = objectMapper;
+    }
 
     @GetMapping(value = "/analise-ia", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<FinanceReportDTO>> obterAnaliseTemplate(@RequestParam(defaultValue = "Geral") String foco) {
@@ -46,6 +48,12 @@ public class TaranisController {
         return obterAnaliseTemplate("Geral");
     }
 
+    // Endpoint corrigido: atende à rota anunciada no up.sh para exportação em JSON
+    @GetMapping(value = "/export/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<ResponseEntity<FinanceReportDTO>> exportarJson() {
+        return obterAnaliseTemplate("Geral");
+    }
+
     @GetMapping(value = "/export/csv", produces = "text/csv")
     public Mono<ResponseEntity<String>> exportarCsvDinamico() {
         return obterAnaliseTemplate("Geral").map(responseEntity -> {
@@ -58,7 +66,7 @@ public class TaranisController {
             // Escreve o cabeçalho dinamicamente
             csv.append(String.join(",", colunas)).append("\n");
 
-            // Escreve os valores dinamicamente usando List.add()
+            // Escreve os valores dinamicamente usando escape apropriado
             List<String> valores = new ArrayList<>();
             for (String col : colunas) {
                 Object val = props.get(col);
